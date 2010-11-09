@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load comments %}
+{% load thumbnail %}
+{% load tag_cloud %}
+{% block title %} Life. Love. Tech. Faith... and other stuff.{% endblock %}
+{% block cssid %}blog{% endblock %}
+{% block main %}
+		{% for entry in entries.object_list %}
+		  {% get_comment_count for entry as comment_count %}
+			<article>
+			{% if entry.image %}
+			<a class="entry-image" href="{% url blog-entry entry.path %}"><img class="right" src="{% thumbnail entry.image 180x180 %}"></a>
+			{% endif %}
+			<h2><a href="{% url blog-entry entry.path %}">{{ entry.title }} </a></h2>
+			<div class="time"><span>{{ entry.date|date:"d" }}</span><span>{{ entry.date|date:"M" }}</span><span>{{ entry.date|date:"Y" }}</span></div>
+			<p>{{ entry.body|striptags|truncatewords:100 }}</p>
+			<div class="entry-tags">
+				<span>Tags:</span>	
+			{% tags_for_object entry as entry_tags %}
+			{% for tag in entry_tags %}
+				<span class="tag-{{tag.font_size}}"><a href="/tag/{{tag.name|slugify}}/">{{tag.name}}</a></span>
+		  {% endfor %}
+		  </div>
+			<div class="read-links">
+			<a href="{% url blog-entry entry.path %}">Read Full</a> | <a href="{% url blog-entry entry.path %}#comments">{{ comment_count }} Comments</a>
+		  </div>
+		</article>
+		{% endfor %}
+		<div class="pagination">
+			{% for p in entries.paginator.page_range %}
+			{% if tag %}
+			<a {% if p == page %}class="current"{% endif %} href="{% url pagination-tag tag p %}" title="">{{ p }}</a>
+			{% else %}
+			<a {% if p == page %}class="current"{% endif %} href="{% url pagination p %}" title="">{{ p }}</a>
+			{% endif %}
+			{% endfor %}
+		</div> 
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load comments %}
+{% load thumbnail %}
+{% block title %} {{ album.title }} {% endblock %}
+{% block main %}
+	{% for photo in album.photos.all %} 
+	{% if photo %}
+	{% get_comment_count for photo as comment_count %}
+	<a class="album_cover" href="/gallery/{{ album.path }}/{{ photo.path }}"><img src="{{ photo.image|thumbnail:"200x200" }}"><span>{{ comment_count }} comments</span></a>
+	{% else %}
+	<p> There are no photos in this album! </p>
+	{% endif %}
+	{% endfor %}
+{% endblock %}

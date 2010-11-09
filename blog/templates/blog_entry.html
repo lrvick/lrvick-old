@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block css %}
+	{{ block.super }}
+	<link rel="stylesheet" type="text/css" href="/media/css/pygments.css" media="screen">
+{% endblock %}
+{% load markup %}
+{% load adminfiles_tags %}
+{% load hilight %}
+{% load comments %}
+{% load thumbnail %}
+{% load gravatar_tags %}
+{% block title %} {{ entry.title }} {% endblock %}
+{% block cssid %}blog{% endblock %}
+{% block main %}
+<article>
+<a href="{% url blog-entry entry.path %}"><img class="right" src="{% thumbnail entry.image 250x260 %}"></a>
+<h2> {{ entry.title }} </h2>
+<p class="entry-timeauthor">Posted on: <time>{{ entry.date|date:"d" }} {{ entry.date|date:"M" }} {{ entry.date|date:"Y" }}</time></p>
+{{ entry.body.raw|render_uploads|hilite }}
+</article>
+	{% get_comment_list for entry as comment_list %}
+	{% for comment in comment_list %}
+	<article class="comment">
+	<img class="gravitar" src="{% get_gravatar_for_email comment.email %}">
+	<h3><a href="mailto:{{ comment.email }}">{{ comment.name }}</a></h3>
+	<a class="website" href="{{ comment.url }}">{{ comment.url }}</a>
+	<p>{{ comment.comment }}</p>
+	</article>
+	{% endfor %}
+<article>
+<h2>Share your thoughts:</h2>
+{% render_comment_form for entry %}
+</article>
+{% endblock %}

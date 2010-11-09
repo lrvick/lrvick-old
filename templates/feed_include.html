@@ -1,0 +1,6 @@
+          <ul>
+          {% for item in feed.entries %}
+          <li><a href="{{ item }}">{{ item.title_detail.value }}</a></li>
+          {% endfor %}
+          </ul>
+

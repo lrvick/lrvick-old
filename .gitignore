@@ -1,0 +1,11 @@
+~*
+*.pyc
+*.swm
+*.swn
+*.swo
+*.swp
+media/uploads/*
+media/photos*
+media/Image*
+.private-settings
+django.wsgi

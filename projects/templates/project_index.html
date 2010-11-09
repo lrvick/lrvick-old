@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load tag_cloud %}
+{% load thumbnail %}
+{% block title %} Some of the projects I have worked on {% endblock %}
+{% block cssid %}projects{% endblock %}
+{% block main %}
+		{% for project in object_list %}
+		<article>
+		{% if project.image %}
+			<img class="left" src="{% thumbnail project.image 180x180 %}">
+		{% endif %}
+		{% if project.client %}
+		  {% if project.client.url %}
+			  <h2><a href="{{ project.client.url }}">{{ project.client }}</a></h2>
+			{% else %}
+			<h2>{{ project.client }}</h2>
+			{% endif %}
+		  {% if project.project_url %}
+			  <h3><a href="{{ project.project_url }}">{{ project.title }}</a></h3>
+			{% else %}
+			  <h3>{{ project.title }}</h3>
+			{% endif %}
+		{% endif %}
+    <p>{{ project.description }}</p>
+			<div class="tags">
+				<span>Skills used:</span>
+			  {% tags_for_object project as project_tags %}
+			  {% for tag in project_tags %}
+				<span class="tag-{{tag.font_size}}"><a href="/tag/{{tag.name|slugify}}/">{{tag.name}}</a></span>
+		    {% endfor %}
+			</div>
+		</article>
+		{% endfor %}
+{% endblock %}

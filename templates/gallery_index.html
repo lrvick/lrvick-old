@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load thumbnail %}
+{% block title %} {{ album.title }} {% endblock %}
+{% block main %}
+{% for album in gallery %}
+  <section class="album_cover">
+	<h2><a href="/gallery/{{ album.path }}">{{ album.title }}</a></h2>
+	<a href="/gallery/{{ album.path }}"><img src="{{ album.cover.image|thumbnail:"260x280" }}"></a>
+	<p> {{ album.date|date:"d M Y" }}</p>
+	<p>{{ album.description|safe }}</p>
+	<p>{{ album.photos.count }} photos</p>
+	</section>
+	{% endfor %}
+{% endblock %}

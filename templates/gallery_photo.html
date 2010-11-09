@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load comments %}
+{% load thumbnail %}
+{% block title %} {{ photo.title }} {% endblock %}
+{% block main %}
+  <article>
+    <h2> {{ photo.title }} </h2>
+		<a href="{{ photo.photo.url }}" alt="View Original Image"><img src="{{ photo.image|thumbnail:"700x0" }}"></a>
+		<p>{{ photo.caption }}</p>
+	</article>
+	{% get_comment_list for photo as comment_list %}
+	{% for comment in comment_list %}
+  <ul>
+		<li>{{ comment.name }}
+		<li>{{ comment.comment }}
+		<li>{{ comment.email }}
+		<li>{{ comment.url }}
+		<li>{{ comment.submit_date }}
+	</ul>
+	{% endfor %}
+<article>
+	{% for photo in photo.album.photos.all %}
+	<a href="/gallery/{{ photo.album.path }}/{{ photo.path }}"><img src="{{ photo.image|thumbnail:"50x0" }}"></a>
+	{% endfor %}
+	</p>
+	<p>
+	{% ifnotequal prev 0 %}
+	<a href="/gallery/{{ photo.album.path }}/{{ prev }}">prev</a>
+  {% endifnotequal %}
+	| {{ current  }} of {{ total }} |
+	{% ifnotequal next 0 %}
+	<a href="/gallery/{{ photo.album.path }}/{{ next }}">next</a>
+  {% endifnotequal %}
+	</p>
+	</article>
+
+	<article>
+	<h2>Share your thoughts:</h2>
+	{% render_comment_form for photo %}
+	</article>
+		{% endblock %}

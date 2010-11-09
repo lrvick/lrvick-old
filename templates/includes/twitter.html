@@ -1,0 +1,5 @@
+<ul>
+{% for pub, link, text in tweets %}
+  <li><span class="time">{{ pub|date:"F j Y" }}</span><a href="{{ link }}" title="">{{ text }}</a></li>
+  {% endfor %}
+</ul>

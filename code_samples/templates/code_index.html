@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load tag_cloud %}
+{% load thumbnail %}
+{% block title %} Code samples and stuff {% endblock %}
+{% block cssid %}code{% endblock %}
+{% block main %}
+		{% for code in object_list %}
+		<article>
+		  {% if code.source_url %}
+			  <h3><a href="{{ code.code_url }}">{{ code.title }}</a></h3>
+			{% else %}
+			  <h3>{{ code.title }}</h3>
+			{% endif %}
+    <p>{{ code.description }}</p>
+			<div class="tags">
+				<span>Languages/Frameworks used:</span>
+			  {% tags_for_object code as code_tags %}
+			  {% for tag in code_tags %}
+				<span class="tag-{{tag.font_size}}"><a href="/tag/{{tag.name|slugify}}/">{{tag.name}}</a></span>
+		    {% endfor %}
+			</div>
+		</article>
+		{% endfor %}
+{% endblock %}
